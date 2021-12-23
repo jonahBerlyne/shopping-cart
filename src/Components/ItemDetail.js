@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import NavBar from './Navbar';
 import { useParams } from 'react-router';
 import calculatePriceOf from './Price';
+import AddToCart from './Cart';
 
 export default function ItemDetail () {
 
@@ -32,6 +33,10 @@ export default function ItemDetail () {
    <br/>
    <br/>
    <p><label>Price: </label>${totalPrice}</p>
+   <br/>
+   <br/>
+   <br/>
+   <AddToCart/>
   </div>
  );
 }
