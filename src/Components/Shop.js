@@ -15,22 +15,33 @@ export default function Shop () {
  }, []);
  
  const [items, setItems] = useState([]);
+ const [error, setError] = useState('');
+ const [errorMessage, setErrorMessage] = useState('');
  
  const fetchItems = async () => {
-  const data = await fetch("https://fakestoreapi.com/products");
-  
-  const items = await data.json();
-  console.log(items);
-  setItems(items);
+  try {
+    const data = await fetch("https://fakestoreapi.com/products");
+    const items = await data.json();
+    console.log(items);
+    setItems(items);
+    setError('');
+  } catch (err) {
+    setError(err);
+    setErrorMessage("Sorry! You have an error: " + err);
+  }
  };
 
+ useEffect(() => {
+  if (error == '') setErrorMessage('');
+ });
 
  return (
   <div>
    <NavBar/>
    <br/>
+   {errorMessage && <h1>{errorMessage}</h1>}
    {items.map(item => { 
-    let totalPrice = calculatePriceOf(item); 
+    let itemPrice = calculatePriceOf(item); 
     
     return (<div key={item.id}>
      <h4>{item.title}</h4> 
@@ -38,7 +49,7 @@ export default function Shop () {
      <br/>
      <br/>
      <br/>
-     <p><label>Price: </label>${totalPrice}</p>
+     <p><label>Price: </label>${itemPrice}</p>
    </div>)}
    )}
   </div>

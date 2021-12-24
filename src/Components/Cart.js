@@ -6,14 +6,24 @@ export default function AddToCart() {
  const { id } = useParams();
  
  const [item, setItem] = useState([]);
+ const [error, setError] = useState('');
+ const [errorMessage, setErrorMessage] = useState('');
  
  async function fetchItem () {
-  const itemData = await fetch(`https://fakestoreapi.com/products/${id}`);
-  
-  const item = await itemData.json();
-  setItem(item);
-
+  try {
+   const itemData = await fetch(`https://fakestoreapi.com/products/${id}`);
+   const item = await itemData.json();
+   setItem(item);
+   setError('');
+  } catch (err) {
+    setError(err);
+    setErrorMessage("Sorry! You have an error: " + err);
+  }
  }
+
+ useEffect(() => {
+  if (error == '') setErrorMessage('');
+ });
 
  useEffect(() => {
   fetchItem();
@@ -31,15 +41,16 @@ export default function AddToCart() {
  const [totalPrice, setTotalPrice] = useState(0);
 
  useEffect(() => {
-  const staticTotal = calculatePriceOf(item);
-  setTotalPrice(staticTotal * inputValue);
+  const itemPrice = calculatePriceOf(item);
+  setTotalPrice(itemPrice * inputValue);
  }, [inputValue]);
  
  return (
   <div>
-  <input type="number" min="0" max="15" value={inputValue} onChange={changeValue}/> 
-  <p>Total: ${inputValue === 0 ? "0.00" : totalPrice.toFixed(2)}</p> 
-  {/* Conditional to avoid NaN display on render */}
+   {errorMessage && <h1>{errorMessage}</h1>}
+   <input type="number" min="0" max="15" value={inputValue} onChange={changeValue}/> 
+   <p>Total: ${inputValue === 0 ? "0.00" : totalPrice.toFixed(2)}</p> 
+   {/* Conditional to avoid NaN display on render */}
   </div>
  );
 }
