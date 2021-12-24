@@ -10,6 +10,9 @@ export default function ItemDetail () {
 
  useEffect(() => {
   fetchItem();
+  return () => {
+    setItem([]);
+  } 
  }, []);
 
  const [item, setItem] = useState([]);

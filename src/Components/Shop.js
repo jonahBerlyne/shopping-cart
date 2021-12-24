@@ -6,7 +6,12 @@ import calculatePriceOf from './Price';
 export default function Shop () {
 
  useEffect(() => {
+  console.log("mounted");
   fetchItems();
+  return () => {
+    console.log("unmounted");
+    setItems([]);
+  } 
  }, []);
  
  const [items, setItems] = useState([]);
