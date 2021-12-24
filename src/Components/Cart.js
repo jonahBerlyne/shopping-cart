@@ -22,37 +22,28 @@ export default function AddToCart() {
   } 
  }, []);
 
- const [prevValue, setPrevValue] = useState(0);
  const [inputValue, setInputValue] = useState(0);
  
  function changeValue(e) {
-  setPrevValue(parseInt(inputValue));
   setInputValue(parseInt(e.target.value));
  }
  
  const [buyPrice, setBuyPrice] = useState(0);
- const [initialPrice, setInitialPrice] = useState(0);
  const [totalPrice, setTotalPrice] = useState(0);
- 
- function changePrice() {
-  const staticTotal = calculatePriceOf(item);
-  if (prevValue < inputValue) {
-    setTotalPrice(staticTotal * inputValue);
-    console.log(totalPrice);
-    setBuyPrice(totalPrice);
-  }
- }
 
  useEffect(() => {
-  if (inputValue === 2) setInitialPrice(totalPrice); 
-  setTotalPrice(inputValue * initialPrice);
-  changePrice();
+  const staticTotal = calculatePriceOf(item);
+  setTotalPrice(staticTotal * inputValue);
  }, [inputValue]);
+
+ useEffect(() => {
+  setBuyPrice(totalPrice);
+ }, [totalPrice]);
  
  return (
   <div>
   <input type="number" min="0" max="15" value={inputValue} onChange={changeValue}/> 
-  <p onChange={changePrice}>Total: ${inputValue === 0 ? "0.00" : buyPrice}</p>
+  <p>Total: ${inputValue === 0 ? "0.00" : buyPrice}</p>
   </div>
  );
 }
