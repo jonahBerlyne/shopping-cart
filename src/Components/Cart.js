@@ -28,22 +28,18 @@ export default function AddToCart() {
   setInputValue(parseInt(e.target.value));
  }
  
- const [buyPrice, setBuyPrice] = useState(0);
  const [totalPrice, setTotalPrice] = useState(0);
 
  useEffect(() => {
   const staticTotal = calculatePriceOf(item);
   setTotalPrice(staticTotal * inputValue);
  }, [inputValue]);
-
- useEffect(() => {
-  setBuyPrice(totalPrice);
- }, [totalPrice]);
  
  return (
   <div>
   <input type="number" min="0" max="15" value={inputValue} onChange={changeValue}/> 
-  <p>Total: ${inputValue === 0 ? "0.00" : buyPrice}</p>
+  <p>Total: ${inputValue === 0 ? "0.00" : totalPrice.toFixed(2)}</p> 
+  {/* Conditional to avoid NaN display on render */}
   </div>
  );
 }

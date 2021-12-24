@@ -35,9 +35,11 @@ export default function ItemDetail () {
    <br/>
    <br/>
    <br/>
-   <p><label>Price: </label>${totalPrice}</p>
+   <h3>{item.description}</h3>
    <br/>
    <br/>
+   <br/>
+   <h3><label>Price: </label>${totalPrice}</h3>
    <br/>
    <AddToCart/>
   </div>
