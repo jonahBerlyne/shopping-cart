@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from "./Navbar";
 import calculatePriceOf from './Price';
+import Cart from './Cart';
 
 export default function Shop () {
 
@@ -21,6 +22,7 @@ export default function Shop () {
  const fetchItems = async () => {
   try {
     const data = await fetch("https://fakestoreapi.com/products");
+    console.log("fetched");
     const items = await data.json();
     console.log(items);
     setItems(items);
@@ -40,6 +42,10 @@ export default function Shop () {
    <NavBar/>
    <br/>
    {errorMessage && <h1>{errorMessage}</h1>}
+   {/* {!errorMessage && <Cart/>} */}
+   <br/>
+   <br/>
+   {!errorMessage && <h1>Buy:</h1>}
    {items.map(item => { 
     let itemPrice = calculatePriceOf(item); 
     

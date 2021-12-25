@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import NavBar from './Navbar';
 import { useParams } from 'react-router';
 import calculatePriceOf from './Price';
-import AddToCart from './Cart';
+import AddToCart from './AddToCart';
 
 export default function ItemDetail () {
 
@@ -22,6 +22,7 @@ export default function ItemDetail () {
  async function fetchItem () {
   try {
    const itemData = await fetch(`https://fakestoreapi.com/products/${id}`);
+   console.log("fetched");
    const item = await itemData.json();
    setItem(item);
    setError('');
