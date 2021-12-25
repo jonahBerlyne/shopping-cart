@@ -61,7 +61,7 @@ export default function AddToCart() {
 
     localStorage.setItem("title", item.title);
 
-    const totalPriceStr = totalPrice.toString();
+    const totalPriceStr = totalPrice.toFixed(2).toString();
     localStorage.setItem("totalPriceStr", totalPriceStr);
   }
  }, [numItems]);
@@ -71,7 +71,7 @@ export default function AddToCart() {
    {errorMessage && <h1>{errorMessage}</h1>}
    <input type="number" min="0" max="15" value={inputValue} onChange={changeValue}/> 
    {/* Conditional to avoid NaN display on render */}
-   <p>Total: ${inputValue === 0 ? "0.00" : totalPrice.toFixed(2)}</p> 
+   <p>{inputValue > 15 ? "You can only add 15 items maximum." : `Total: $${inputValue === 0 ? "0.00" : totalPrice.toFixed(2)}`}</p> 
    <button onClick={addToCart}>Add to Cart</button>
   </div>
  );
