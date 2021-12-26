@@ -3,6 +3,7 @@ import NavBar from './Navbar';
 import { useParams } from 'react-router';
 import calculatePriceOf from './Price';
 import AddToCart from './AddToCart';
+import Cart from './Cart';
 
 export default function ItemDetail () {
 
@@ -48,13 +49,17 @@ export default function ItemDetail () {
    <br/>
    <br/>
    <br/>
-   <h3>{item.description}</h3>
+   <h3>{item.description}.</h3>
    <br/>
    <br/>
    <br/>
    <h3><label>Price: </label>${itemPrice}</h3>
    <br/>
-   <AddToCart/>
+   {!errorMessage && <AddToCart/>}
+   <br/>
+   <br/>
+   <br/>
+   {!errorMessage && <Cart/>}
   </div>
  );
 }

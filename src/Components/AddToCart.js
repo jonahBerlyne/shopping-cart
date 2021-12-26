@@ -49,29 +49,37 @@ export default function AddToCart() {
  const [numItems, setNumItems] = useState(0);
  
  function addToCart() {
-   if (inputValue === 0 || inputValue > 15) return;
+   if (isNaN(inputValue) || inputValue === 0 || inputValue > 15) return;
    setNumItems(inputValue);
  }
 
+ function addToLocalStorage(idNum, numItems,itemTitle, itemPrice) {
+   let data = localStorage.getItem(idNum);
+   data = data ? JSON.parse(data) : {};
+   const id = "id";
+   data[id] = idNum;
+   const amount = "amount";
+   data[amount] = numItems;
+   const name = "name";
+   data[name] = itemTitle;
+   const price = "price";
+   data[price] = itemPrice.toFixed(2);
+   localStorage.setItem(idNum, JSON.stringify(data));
+ }
+
  useEffect(() => {
+  // localStorage.clear();
   if (inputValue !== 0) {
-    // localStorage.clear();
-    const numItemsStr = numItems.toString();
-    localStorage.setItem("numItemsStr", numItemsStr);
-
-    localStorage.setItem("title", item.title);
-
-    const totalPriceStr = totalPrice.toFixed(2).toString();
-    localStorage.setItem("totalPriceStr", totalPriceStr);
+    addToLocalStorage(item.id, numItems, item.title, totalPrice);
+    console.log(localStorage);
   }
  }, [numItems]);
  
  return (
   <div>
    {errorMessage && <h1>{errorMessage}</h1>}
-   <input type="number" min="0" max="15" value={inputValue} onChange={changeValue}/> 
-   {/* Conditional to avoid NaN display on render */}
-   <p>{inputValue > 15 ? "You can only add 15 items maximum." : `Total: $${inputValue === 0 ? "0.00" : totalPrice.toFixed(2)}`}</p> 
+   <input type="number" min="0" max="15" value={inputValue} onChange={changeValue}/>
+   <p>{isNaN(inputValue) ? "Please enter a number." : inputValue > 15 ? "You can only add 15 items maximum." : `Total: $${inputValue === 0 ? "0.00" : totalPrice.toFixed(2)}`}</p> 
    <button onClick={addToCart}>Add to Cart</button>
   </div>
  );
