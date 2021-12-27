@@ -16,6 +16,20 @@ export default function Cart() {
    setItems(itemValues);
  }, []);
 
+ const [totalPrice, setTotalPrice] = useState(0);
+
+ useEffect(() => {
+  if (items.length !== 0) {
+    let priceArr = [];
+    let j = items.length;
+    while (j--) {
+      priceArr.push(parseFloat(items[j].price));
+    }
+    priceArr = priceArr.reduce((a, b) => a + b).toFixed(2);
+    setTotalPrice(priceArr);
+  }
+ }, [items]);
+
  return (
   <div>
    <NavBar/>
@@ -27,6 +41,10 @@ export default function Cart() {
      </div>
     )
    })}
+   <br/>
+   <br/>
+   <br/>
+   <p>Total Price: ${totalPrice}</p>
   </div>
  );
 }

@@ -75,7 +75,7 @@ export default function AddToCart() {
     setAdded(true);
     setTimeout(() => {
       setAdded(false);
-    }, 5000);
+    }, 1000);
   }
  }, [numItems]);
  
