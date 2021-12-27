@@ -67,11 +67,15 @@ export default function AddToCart() {
    localStorage.setItem(idNum, JSON.stringify(data));
  }
 
+ const [added, setAdded] = useState(false);
+
  useEffect(() => {
-  // localStorage.clear();
   if (inputValue !== 0) {
     addToLocalStorage(item.id, numItems, item.title, totalPrice);
-    console.log(localStorage);
+    setAdded(true);
+    setTimeout(() => {
+      setAdded(false);
+    }, 5000);
   }
  }, [numItems]);
  
@@ -81,6 +85,13 @@ export default function AddToCart() {
    <input type="number" min="0" max="15" value={inputValue} onChange={changeValue}/>
    <p>{isNaN(inputValue) ? "Please enter a number." : inputValue > 15 ? "You can only add 15 items maximum." : `Total: $${inputValue === 0 ? "0.00" : totalPrice.toFixed(2)}`}</p> 
    <button onClick={addToCart}>Add to Cart</button>
+   {added && <p>Added!</p>}
+   <br/>
+   <br/>
+   <br/>
+   <br/>
+   <br/>
+   <br/>
   </div>
  );
 }
