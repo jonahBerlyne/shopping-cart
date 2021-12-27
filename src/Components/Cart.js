@@ -4,16 +4,21 @@ import NavBar from './Navbar';
 export default function Cart() {
 
  const [items, setItems] = useState([]);
+ const [cartIsEmpty, setCartIsEmpty] = useState(false);
  
  useEffect(() => {
    let itemValues = [];
    let keys = Object.keys(localStorage);
    let i = keys.length;
-   while ( i-- ) {
-    itemValues.push(localStorage.getItem(keys[i]));
+   if (i === 0) {
+     setCartIsEmpty(true);
+   } else {
+     while ( i-- ) {
+      itemValues.push(localStorage.getItem(keys[i]));
+     }
+     itemValues = itemValues.map(value => JSON.parse(value));
+     setItems(itemValues);
    }
-   itemValues = itemValues.map(value => JSON.parse(value));
-   setItems(itemValues);
  }, []);
 
  const [totalPrice, setTotalPrice] = useState(0);
@@ -34,6 +39,7 @@ export default function Cart() {
   <div>
    <NavBar/>
    <h1>Cart:</h1>
+   {cartIsEmpty && <h2>Your cart is currently empty.</h2>}
    {items.map(item => {
     return (
      <div key={item.id}>
@@ -44,7 +50,7 @@ export default function Cart() {
    <br/>
    <br/>
    <br/>
-   <p>Total Price: ${totalPrice}</p>
+   {!cartIsEmpty && <p>Total Price: ${totalPrice}</p>}
   </div>
  );
 }
