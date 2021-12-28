@@ -5,7 +5,7 @@ export default function Home() {
     <div className="App">
       <NavBar/>
       <br/>
-      Home
+      <h1>I'll add styling later.</h1>
     </div>
   );
 }

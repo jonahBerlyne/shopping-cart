@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import calculatePriceOf from "./Price";
 
 export default function AddToCart() {
+
  const { id } = useParams();
  
  const [item, setItem] = useState([]);
@@ -83,13 +84,14 @@ export default function AddToCart() {
   <div>
    {errorMessage && <h1>{errorMessage}</h1>}
    <input type="number" min="0" max="15" value={inputValue} onChange={changeValue}/>
-   <p>{isNaN(inputValue) ? "Please enter a number." : inputValue > 15 ? "You can only add 15 items maximum." : `Total: $${inputValue === 0 ? "0.00" : totalPrice.toFixed(2)}`}</p> 
-   <button onClick={addToCart}>Add to Cart</button>
+   <div style={{whiteSpace: "nowrap", display: "flex", gap: "105px"}}>
+    <p>{isNaN(inputValue) ? "Please enter a number." : inputValue > 15 ? "You can only add 15 items maximum." : `Total: $${inputValue === 0 ? "0.00" : totalPrice.toFixed(2)}`}</p>
+   </div>
+   <div style={{display: "flex", gap: "100px"}}>
+    <button onClick={addToCart}>Add to Cart</button>
+   </div> 
+   <br/>
    {added && <p>Added!</p>}
-   <br/>
-   <br/>
-   <br/>
-   <br/>
    <br/>
    <br/>
   </div>

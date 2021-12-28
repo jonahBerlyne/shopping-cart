@@ -3,10 +3,12 @@ import NavBar from './Navbar';
 import { useParams } from 'react-router';
 import calculatePriceOf from './Price';
 import AddToCart from './AddToCart';
+import Cart from './Cart';
 
 export default function ItemDetail () {
 
  const { id } = useParams();
+//  const [arrProp] = useState([{name: 0}, {name: 1}]);
 
  useEffect(() => {
   fetchItem();
