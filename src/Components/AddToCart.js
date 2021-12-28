@@ -29,30 +29,38 @@ export default function AddToCart() {
 
  useEffect(() => {
   fetchItem();
+  let stor = localStorage.getItem(id);
+  stor = JSON.parse(stor);
+  if (stor !== null) setNumItems(parseInt(stor.amount));
   return () => {
     setItem([]);
   } 
  }, []);
-
- const [inputValue, setInputValue] = useState(0);
- 
- function changeValue(e) {
-  setInputValue(parseInt(e.target.value));
- }
  
  const [totalPrice, setTotalPrice] = useState(0);
-
- useEffect(() => {
-  const itemPrice = calculatePriceOf(item);
-  setTotalPrice(itemPrice * inputValue);
- }, [inputValue]);
 
  const [numItems, setNumItems] = useState(0);
  
  function addToCart() {
-   if (isNaN(inputValue) || inputValue === 0 || inputValue > 15) return;
-   setNumItems(inputValue);
- }
+  setNumItems(numItems + 1);
+}
+
+useEffect(() => {
+  if (numItems !== 0) {
+   const itemPrice = calculatePriceOf(item);
+   setTotalPrice(itemPrice * numItems);
+  }
+}, [numItems]);
+
+useEffect(() => {
+  if (totalPrice > 0) {
+   addToLocalStorage(item.id, numItems, item.title, totalPrice);
+   setAdded(true);
+   setTimeout(() => {
+     setAdded(false);
+   }, 1000);
+  }
+ }, [totalPrice]);
 
  function addToLocalStorage(idNum, numItems,itemTitle, itemPrice) {
    let data = localStorage.getItem(idNum);
@@ -69,24 +77,10 @@ export default function AddToCart() {
  }
 
  const [added, setAdded] = useState(false);
-
- useEffect(() => {
-  if (inputValue !== 0) {
-    addToLocalStorage(item.id, numItems, item.title, totalPrice);
-    setAdded(true);
-    setTimeout(() => {
-      setAdded(false);
-    }, 1000);
-  }
- }, [numItems]);
  
  return (
   <div>
    {errorMessage && <h1>{errorMessage}</h1>}
-   <input type="number" min="0" max="15" value={inputValue} onChange={changeValue}/>
-   <div style={{whiteSpace: "nowrap", display: "flex", gap: "105px"}}>
-    <p>{isNaN(inputValue) ? "Please enter a number." : inputValue > 15 ? "You can only add 15 items maximum." : `Total: $${inputValue === 0 ? "0.00" : totalPrice.toFixed(2)}`}</p>
-   </div>
    <div style={{display: "flex", gap: "100px"}}>
     <button onClick={addToCart}>Add to Cart</button>
    </div> 

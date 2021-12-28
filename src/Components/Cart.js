@@ -25,10 +25,11 @@ export default function Cart(props) {
   const [totalPrice, setTotalPrice] = useState(0);
   const [refresh, setRefresh] = useState(false);
   
-  function removeItem(index, id) {
+  function removeItem(index, id, price) {
    items.splice(index, 1);
    setItems(items);
    localStorage.removeItem(`${id}`);
+   if (totalPrice - price === 0) setCartIsEmpty(true);
    setRefresh(!refresh);
   }
 
@@ -56,7 +57,7 @@ export default function Cart(props) {
           <Link to={`/shop/${item.id}`}>Buy More</Link>
           <br/>
           <br/>
-          <button onClick={() => removeItem(index, item.id)}>Remove</button>
+          <button onClick={() => removeItem(index, item.id, item.price)}>Remove</button>
         </div>
       )
     })}
