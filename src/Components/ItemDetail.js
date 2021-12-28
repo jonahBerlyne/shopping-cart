@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 import calculatePriceOf from './Price';
 import AddToCart from './AddToCart';
 import Cart from './Cart';
+import { Link } from 'react-router-dom';
 
 export default function ItemDetail () {
 
