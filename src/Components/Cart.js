@@ -48,11 +48,28 @@ export default function Cart(props) {
    }
   });
 
-  function handleRefresh() {
-    console.log(refresh);
-    setRefresh(!refresh);
-    console.log(refresh);
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  function incrementAmount(amount, id) {
+    amount = amount + 1;
+    setTotalAmount(amount);
+    setId(id);
   }
+
+  function changeItem(id) {
+    let item = localStorage.getItem(id);
+    item = JSON.parse(item);
+    item.amount = totalAmount;
+    item = JSON.stringify(item);
+    localStorage.setItem(id, item);
+  }
+
+  useEffect(() => {
+    if (id !== null) changeItem(id);
+    setRefresh(!refresh);
+  }, [totalAmount]);
+
+  const [id, setId] = useState(null);
 
  return (
   <div>
@@ -64,7 +81,7 @@ export default function Cart(props) {
         <div key={item.id}>
           <div>{item.name}</div>
           <br/>
-          <div style={{display: "flex", gap: "5px"}}><DecrementBtn amount={item.amount} id={item.id}/>{item.amount} <IncrementBtn amount={item.amount} id={item.id} onRefresh={handleRefresh}/></div>
+          <div style={{display: "flex", gap: "5px"}}><DecrementBtn/>{item.amount} <IncrementBtn onClick={incrementAmount(item.amount, item.id)}/></div>
           <br/>
           <div>${item.price}</div>
           <br/>
