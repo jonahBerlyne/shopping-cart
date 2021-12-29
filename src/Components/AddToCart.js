@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import calculatePriceOf from "./Price";
 
-export default function AddToCart() {
+export default function AddToCart(props) {
 
  const { id } = useParams();
+
+ const { basePrice } = props;
  
  const [item, setItem] = useState([]);
  const [error, setError] = useState('');
@@ -46,15 +48,12 @@ export default function AddToCart() {
 }
 
 useEffect(() => {
-  if (numItems !== 0) {
-   const itemPrice = calculatePriceOf(item);
-   setTotalPrice(itemPrice * numItems);
-  }
+  if (numItems !== 0) setTotalPrice(basePrice * numItems);
 }, [numItems]);
 
 useEffect(() => {
   if (totalPrice > 0) {
-   addToLocalStorage(item.id, numItems, item.title, totalPrice);
+   addToLocalStorage(item.id, numItems, item.title, totalPrice, basePrice);
    setAdded(true);
    setTimeout(() => {
      setAdded(false);
@@ -62,13 +61,15 @@ useEffect(() => {
   }
  }, [totalPrice]);
 
- function addToLocalStorage(idNum, numItems,itemTitle, itemPrice) {
+ function addToLocalStorage(idNum, numItems,itemTitle, itemPrice, basePrice) {
    let data = localStorage.getItem(idNum);
    data = data ? JSON.parse(data) : {};
    const id = "id";
    data[id] = idNum;
    const amount = "amount";
    data[amount] = numItems;
+   const base = "base";
+   data[base] = basePrice;
    const name = "name";
    data[name] = itemTitle;
    const price = "price";

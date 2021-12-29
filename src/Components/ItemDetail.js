@@ -39,7 +39,7 @@ export default function ItemDetail () {
   if (error == '') setErrorMessage('');
  });
 
- let itemPrice = calculatePriceOf(item);
+ let basePrice = calculatePriceOf(item);
 
  return (
   <div>
@@ -55,9 +55,9 @@ export default function ItemDetail () {
    <br/>
    <br/>
    <br/>
-   <h3><label>Price: </label>${itemPrice}</h3>
+   <h3><label>Price: </label>${basePrice}</h3>
    <br/>
-   {!errorMessage && <AddToCart/>}
+   {!errorMessage && <AddToCart basePrice={basePrice}/>}
   </div>
  );
 }

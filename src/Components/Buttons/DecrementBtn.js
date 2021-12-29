@@ -2,15 +2,11 @@ import React, { useState, useEffect } from 'react';
 
 export default function DecrementBtn(props) {
 
- const {amount} = props;
-
- function decrementTotal() {
-  console.log("decremented");
- }
+ const {onClick} = props;
 
  return (
   <div>
-   <button onClick={decrementTotal}>-</button>
+   <button onClick={onClick}>-</button>
   </div>
  );
 }
