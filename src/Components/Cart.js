@@ -3,7 +3,6 @@ import NavBar from './Navbar';
 import { Link } from 'react-router-dom';
 import DecrementBtn from './Buttons/DecrementBtn';
 import IncrementBtn from './Buttons/IncrementBtn';
-import Display from './Display';
 
 export default function Cart(props) {
 
@@ -27,6 +26,7 @@ export default function Cart(props) {
   
   const [totalPrice, setTotalPrice] = useState(0);
   const [refresh, setRefresh] = useState(false);
+  console.log(refresh);
   
   function removeItem(index, id, price) {
    items.splice(index, 1);
@@ -49,13 +49,10 @@ export default function Cart(props) {
   });
 
   function handleRefresh() {
+    console.log(refresh);
     setRefresh(!refresh);
-    console.log("refreshed");
+    console.log(refresh);
   }
-
-  const [amount, setAmount] = useState(0);
-  const incrementAmount = (arg) => setAmount(arg + 1);
-  let decrementAmount = () => setAmount(amount - 1);
 
  return (
   <div>
@@ -67,10 +64,7 @@ export default function Cart(props) {
         <div key={item.id}>
           <div>{item.name}</div>
           <br/>
-          <div style={{display: "flex", gap: "5px"}}>
-          <DecrementBtn onClickFunc={decrementAmount} amount={amount} id={item.id}/>
-          {item.amount}
-          <IncrementBtn onClickFunc={() => incrementAmount(item.amount)} amount={item.amount} id={item.id} onRefresh={handleRefresh}/></div>
+          <div style={{display: "flex", gap: "5px"}}><DecrementBtn amount={item.amount} id={item.id}/>{item.amount} <IncrementBtn amount={item.amount} id={item.id} onRefresh={handleRefresh}/></div>
           <br/>
           <div>${item.price}</div>
           <br/>
