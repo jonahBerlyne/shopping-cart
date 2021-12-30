@@ -12,13 +12,12 @@ export default function AddToCart( {initialPrice} ) {
  const fetchItem = async () => {
   try {
    const itemData = await fetch(`https://fakestoreapi.com/products/${id}`);
-   console.log("fetched");
    const item = await itemData.json();
    setItem(item);
    setError('');
   } catch (err) {
     setError(err);
-    setErrorMessage("Sorry! You have an error: " + err);
+    setErrorMessage(`Sorry! You have an error: ${err}`);
   }
  }
 
@@ -36,31 +35,28 @@ export default function AddToCart( {initialPrice} ) {
   } 
  }, []);
  
- const [itemAdded, setItemAdded] = useState(false);
  const [numItems, setNumItems] = useState(0);
  const [totalPrice, setTotalPrice] = useState(0);
 
  
- const addToCart = () => {
-   setNumItems(numItems + 1);
-   setItemAdded(!itemAdded);
- }
+ const addToCart = () => setNumItems(numItems + 1);
 
-useEffect(() => {
+ useEffect(() => {
   if (numItems !== 0) setTotalPrice(initialPrice * numItems);
-}, [itemAdded]);
+ }, [numItems]);
 
-useEffect(() => {
+ useEffect(() => {
   if (totalPrice > 0) {
    addToLocalStorage(item.id, item.image, numItems, item.title, totalPrice, initialPrice);
-   setAddedMessage(true);
+   setAdded(true);
    setTimeout(() => {
-     setAddedMessage(false);
+     setAdded(false);
    }, 1000);
   }
  }, [totalPrice]);
 
  const addToLocalStorage = (idNum, itemImage, numItems,itemTitle, itemPrice) => {
+   if (idNum === undefined) return;
    let data = localStorage.getItem(idNum);
    data = data ? JSON.parse(data) : {};
    const id = "id";
@@ -78,7 +74,7 @@ useEffect(() => {
    localStorage.setItem(idNum, JSON.stringify(data));
  }
 
- const [addedMessage, setAddedMessage] = useState(false);
+ const [added, setAdded] = useState(false);
  
  return (
   <div>
@@ -87,7 +83,7 @@ useEffect(() => {
     <button onClick={addToCart}>Add to Cart</button>
    </div> 
    <br/>
-   {addedMessage && <p>Added!</p>}
+   {added && <p>Added!</p>}
    <br/>
    <br/>
   </div>

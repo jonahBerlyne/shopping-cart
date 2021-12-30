@@ -24,7 +24,6 @@ export default function Shop () {
  const fetchItems = async () => {
   try {
     const data = await fetch("https://fakestoreapi.com/products");
-    console.log("fetched");
     const items = await data.json();
     setFetched(true);
     setDuplicate(items);

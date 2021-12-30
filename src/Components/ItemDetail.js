@@ -23,7 +23,6 @@ export default function ItemDetail () {
  const fetchItem = async () => {
   try {
    const itemData = await fetch(`https://fakestoreapi.com/products/${id}`);
-   console.log("fetched");
    const item = await itemData.json();
    setFetched(true);
    setItem(item);
@@ -31,7 +30,7 @@ export default function ItemDetail () {
   } catch (err) {
     setFetched(true);
     setError(err);
-    setErrorMessage("Sorry! You have an error: " + err);
+    setErrorMessage(`Sorry! You have an error: ${err}`);
   }
  }
 
