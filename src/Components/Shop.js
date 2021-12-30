@@ -44,7 +44,7 @@ export default function Shop () {
  const [refresh, setRefresh] = useState(false);
  const [selected, setSelected] = useState("All");
 
- function changeCategory() {
+ const changeCategory = () => {
   setItems(duplicate);
   let selectBox = document.getElementById("selectBox");
   let selectedValue = selectBox.options[selectBox.selectedIndex].value;

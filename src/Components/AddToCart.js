@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
-import calculatePriceOf from "./Price";
 
-export default function AddToCart(props) {
+export default function AddToCart( {initialPrice} ) {
 
  const { id } = useParams();
-
- const { initialPrice } = props;
  
  const [item, setItem] = useState([]);
  const [error, setError] = useState('');
  const [errorMessage, setErrorMessage] = useState('');
  
- async function fetchItem () {
+ const fetchItem = async () => {
   try {
    const itemData = await fetch(`https://fakestoreapi.com/products/${id}`);
    console.log("fetched");
@@ -31,37 +28,39 @@ export default function AddToCart(props) {
 
  useEffect(() => {
   fetchItem();
-  let stor = localStorage.getItem(id);
-  stor = JSON.parse(stor);
-  if (stor !== null) setNumItems(parseInt(stor.amount));
+  let storedItem = localStorage.getItem(id);
+  storedItem = JSON.parse(storedItem);
+  if (storedItem !== null) setNumItems(parseInt(storedItem.amount));
   return () => {
     setItem([]);
   } 
  }, []);
  
+ const [itemAdded, setItemAdded] = useState(false);
+ const [numItems, setNumItems] = useState(0);
  const [totalPrice, setTotalPrice] = useState(0);
 
- const [numItems, setNumItems] = useState(0);
  
- function addToCart() {
-  setNumItems(numItems + 1);
-}
+ const addToCart = () => {
+   setNumItems(numItems + 1);
+   setItemAdded(!itemAdded);
+ }
 
 useEffect(() => {
   if (numItems !== 0) setTotalPrice(initialPrice * numItems);
-}, [numItems]);
+}, [itemAdded]);
 
 useEffect(() => {
   if (totalPrice > 0) {
    addToLocalStorage(item.id, item.image, numItems, item.title, totalPrice, initialPrice);
-   setAdded(true);
+   setAddedMessage(true);
    setTimeout(() => {
-     setAdded(false);
+     setAddedMessage(false);
    }, 1000);
   }
  }, [totalPrice]);
 
- function addToLocalStorage(idNum, itemImage, numItems,itemTitle, itemPrice) {
+ const addToLocalStorage = (idNum, itemImage, numItems,itemTitle, itemPrice) => {
    let data = localStorage.getItem(idNum);
    data = data ? JSON.parse(data) : {};
    const id = "id";
@@ -79,7 +78,7 @@ useEffect(() => {
    localStorage.setItem(idNum, JSON.stringify(data));
  }
 
- const [added, setAdded] = useState(false);
+ const [addedMessage, setAddedMessage] = useState(false);
  
  return (
   <div>
@@ -88,7 +87,7 @@ useEffect(() => {
     <button onClick={addToCart}>Add to Cart</button>
    </div> 
    <br/>
-   {added && <p>Added!</p>}
+   {addedMessage && <p>Added!</p>}
    <br/>
    <br/>
   </div>

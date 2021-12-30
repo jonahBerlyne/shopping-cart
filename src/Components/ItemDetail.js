@@ -3,13 +3,10 @@ import NavBar from './Navbar';
 import { useParams } from 'react-router';
 import calculatePriceOf from './Price';
 import AddToCart from './AddToCart';
-import Cart from './Cart';
-import { Link } from 'react-router-dom';
 
 export default function ItemDetail () {
 
  const { id } = useParams();
-//  const [arrProp] = useState([{name: 0}, {name: 1}]);
 
  useEffect(() => {
   fetchItem();
@@ -23,7 +20,7 @@ export default function ItemDetail () {
  const [errorMessage, setErrorMessage] = useState('');
  const [fetched, setFetched] = useState(false);
 
- async function fetchItem () {
+ const fetchItem = async () => {
   try {
    const itemData = await fetch(`https://fakestoreapi.com/products/${id}`);
    console.log("fetched");

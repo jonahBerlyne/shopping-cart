@@ -27,7 +27,7 @@ export default function Cart() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [refresh, setRefresh] = useState(false);
   
-  function removeItem(index, id, price) {
+  const removeItem = (index, id, price) => {
    items.splice(index, 1);
    setItems(items);
    localStorage.removeItem(`${id}`);
@@ -52,14 +52,14 @@ export default function Cart() {
   const [index, setIndex] = useState(null);
   const [itemPrice, setItemPrice] = useState(NaN);
   
-  function decrementAmount(amount, id, index, price) {
+  const decrementAmount = (amount, id, index, price) => {
     setId(id);
     setIndex(index);
     amount = amount - 1;
     amount === 0 ? removeItem(index, id, price) : setTotalAmount(amount);
   }
 
-  function incrementAmount(amount, id, index) {
+  const incrementAmount = (amount, id, index) => {
     setId(id);
     setIndex(index);
     amount = amount + 1;
@@ -77,7 +77,7 @@ export default function Cart() {
     setRefresh(!refresh);
   }, [itemPrice]);
 
-  function changeItem(id, index) {
+  const changeItem = (id, index) => {
     items[index].amount = totalAmount;
     items[index].price = itemPrice;
     setItems(items);

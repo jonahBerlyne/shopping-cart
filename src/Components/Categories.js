@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-export default function Categories(props) {
-
-  const { onChange } = props;
+export default function Categories( {onChange} ) {
 
   return (
    <div>

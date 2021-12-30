@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-export default function IncrementBtn(props) {
-
- const {onClick} = props;
+export default function IncrementBtn( {onClick} ) {
 
  return (
   <div>
