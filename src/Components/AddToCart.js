@@ -46,13 +46,7 @@ export default function AddToCart( {initialPrice} ) {
  }, [numItems]);
 
  useEffect(() => {
-  if (totalPrice > 0) {
-   addToLocalStorage(item.id, item.image, numItems, item.title, totalPrice, initialPrice);
-   setAdded(true);
-   setTimeout(() => {
-     setAdded(false);
-   }, 1000);
-  }
+  if (totalPrice > 0) addToLocalStorage(item.id, item.image, numItems, item.title, totalPrice);
  }, [totalPrice]);
 
  const addToLocalStorage = (idNum, itemImage, numItems,itemTitle, itemPrice) => {
@@ -72,6 +66,10 @@ export default function AddToCart( {initialPrice} ) {
    const price = "price";
    data[price] = itemPrice.toFixed(2);
    localStorage.setItem(idNum, JSON.stringify(data));
+   setAdded(true);
+   setTimeout(() => {
+     setAdded(false);
+   }, 1000);
  }
 
  const [added, setAdded] = useState(false);
