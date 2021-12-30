@@ -55,15 +55,10 @@ export default function Shop () {
    const jewelry = items.slice(4, 8);
    const electronics = items.slice(8, 14);
    const womensClothing = items.slice(14, 20);
-   if (selected == "Men's Clothing") {
-    setItems(mensClothing);
-   } else if (selected == "Jewelry") {
-     setItems(jewelry);
-   } else if (selected == "Electronics") {
-     setItems(electronics);
-   } else if (selected == "Women's Clothing") {
-     setItems(womensClothing);
-   }
+   if (selected == "Men's Clothing") setItems(mensClothing);
+   if (selected == "Jewelry") setItems(jewelry);
+   if (selected == "Electronics") setItems(electronics);
+   if (selected == "Women's Clothing") setItems(womensClothing);
  }, [selected]);
 
  useEffect(() => {
