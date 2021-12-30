@@ -6,7 +6,7 @@ export default function AddToCart(props) {
 
  const { id } = useParams();
 
- const { basePrice } = props;
+ const { initialPrice } = props;
  
  const [item, setItem] = useState([]);
  const [error, setError] = useState('');
@@ -48,12 +48,12 @@ export default function AddToCart(props) {
 }
 
 useEffect(() => {
-  if (numItems !== 0) setTotalPrice(basePrice * numItems);
+  if (numItems !== 0) setTotalPrice(initialPrice * numItems);
 }, [numItems]);
 
 useEffect(() => {
   if (totalPrice > 0) {
-   addToLocalStorage(item.id, numItems, item.title, totalPrice, basePrice);
+   addToLocalStorage(item.id, item.image, numItems, item.title, totalPrice, initialPrice);
    setAdded(true);
    setTimeout(() => {
      setAdded(false);
@@ -61,15 +61,17 @@ useEffect(() => {
   }
  }, [totalPrice]);
 
- function addToLocalStorage(idNum, numItems,itemTitle, itemPrice, basePrice) {
+ function addToLocalStorage(idNum, itemImage, numItems,itemTitle, itemPrice) {
    let data = localStorage.getItem(idNum);
    data = data ? JSON.parse(data) : {};
    const id = "id";
    data[id] = idNum;
    const amount = "amount";
    data[amount] = numItems;
-   const base = "base";
-   data[base] = basePrice;
+   const image = "image";
+   data[image] = itemImage;
+   const initial = "initial";
+   data[initial] = initialPrice;
    const name = "name";
    data[name] = itemTitle;
    const price = "price";

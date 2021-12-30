@@ -21,15 +21,18 @@ export default function ItemDetail () {
  const [item, setItem] = useState([]);
  const [error, setError] = useState('');
  const [errorMessage, setErrorMessage] = useState('');
+ const [fetched, setFetched] = useState(false);
 
  async function fetchItem () {
   try {
    const itemData = await fetch(`https://fakestoreapi.com/products/${id}`);
    console.log("fetched");
    const item = await itemData.json();
+   setFetched(true);
    setItem(item);
    setError('');
   } catch (err) {
+    setFetched(true);
     setError(err);
     setErrorMessage("Sorry! You have an error: " + err);
   }
@@ -39,25 +42,26 @@ export default function ItemDetail () {
   if (error == '') setErrorMessage('');
  });
 
- let basePrice = calculatePriceOf(item);
+ let initialPrice = calculatePriceOf(item);
 
  return (
   <div>
    <NavBar/>
    <br/>
    {errorMessage && <h1>{errorMessage}</h1>}
+   {!fetched && <h1>Loading...</h1>}
    <h2>{item.title}</h2>
-   <img src={item.image} alt={item.title} height="400px" width="400px"/>
+   {fetched && !errorMessage && <img src={item.image} alt={item.title} height="400px" width="400px"/>}
    <br/>
    <br/>
    <br/>
-   <h3>{item.description}.</h3>
+   {fetched && !errorMessage && <h3>{item.description}.</h3>}
    <br/>
    <br/>
    <br/>
-   <h3><label>Price: </label>${basePrice}</h3>
+   {fetched && !errorMessage && <h3><label>Price: </label>${initialPrice}</h3>}
    <br/>
-   {!errorMessage && <AddToCart basePrice={basePrice}/>}
+   {fetched && !errorMessage && <AddToCart initialPrice={initialPrice}/>}
   </div>
  );
 }

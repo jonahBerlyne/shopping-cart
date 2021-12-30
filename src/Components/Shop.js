@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from "./Navbar";
 import calculatePriceOf from './Price';
-import Cart from './Cart';
+import Categories from './Categories';
 
 export default function Shop () {
 
@@ -15,21 +15,25 @@ export default function Shop () {
   } 
  }, []);
  
- const [items, setItems] = useState([]);
+ const [duplicate, setDuplicate] = useState([]);
  const [error, setError] = useState('');
  const [errorMessage, setErrorMessage] = useState('');
+ const [fetched, setFetched] = useState(false);
+ const [items, setItems] = useState([]);
  
  const fetchItems = async () => {
   try {
     const data = await fetch("https://fakestoreapi.com/products");
     console.log("fetched");
     const items = await data.json();
-    console.log(items);
+    setFetched(true);
+    setDuplicate(items);
     setItems(items);
     setError('');
   } catch (err) {
+    setFetched(true);
     setError(err);
-    setErrorMessage("Sorry! You have an error: " + err);
+    setErrorMessage(`Sorry! You have an error: ${err}`);
   }
  };
 
@@ -37,15 +41,49 @@ export default function Shop () {
   if (error == '') setErrorMessage('');
  });
 
+ const [refresh, setRefresh] = useState(false);
+ const [selected, setSelected] = useState("All");
+
+ function changeCategory() {
+  setItems(duplicate);
+  let selectBox = document.getElementById("selectBox");
+  let selectedValue = selectBox.options[selectBox.selectedIndex].value;
+  setSelected(selectedValue);
+ }
+
+ useEffect(() => {
+   const mensClothing = items.slice(0, 4);
+   const jewelry = items.slice(4, 8);
+   const electronics = items.slice(8, 14);
+   const womensClothing = items.slice(14, 20);
+   if (selected == "Men's Clothing") {
+    setItems(mensClothing);
+   } else if (selected == "Jewelry") {
+     setItems(jewelry);
+   } else if (selected == "Electronics") {
+     setItems(electronics);
+   } else if (selected == "Women's Clothing") {
+     setItems(womensClothing);
+   }
+ }, [selected]);
+
+ useEffect(() => {
+   setRefresh(!refresh);
+ }, [items]);
+
  return (
   <div>
    <NavBar/>
    <br/>
    {errorMessage && <h1>{errorMessage}</h1>}
-   {/* {!errorMessage && <Cart/>} */}
+   {!fetched && <h1>Loading...</h1>}
    <br/>
    <br/>
-   {!errorMessage && <h1>Buy:</h1>}
+   {fetched && !errorMessage && <h1>Buy:</h1>}
+   <br/>
+   {fetched && !errorMessage && <Categories onChange={changeCategory}/>}
+   <br/>
+   <br/>
    {items.map(item => { 
     let itemPrice = calculatePriceOf(item); 
     

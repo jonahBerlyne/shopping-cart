@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import DecrementBtn from './Buttons/DecrementBtn';
 import IncrementBtn from './Buttons/IncrementBtn';
 
-export default function Cart(props) {
+export default function Cart() {
 
   const [items, setItems] = useState([]);
   const [cartIsEmpty, setCartIsEmpty] = useState(false);
@@ -26,7 +26,6 @@ export default function Cart(props) {
   
   const [totalPrice, setTotalPrice] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  console.log(refresh);
   
   function removeItem(index, id, price) {
    items.splice(index, 1);
@@ -52,6 +51,13 @@ export default function Cart(props) {
   const [id, setId] = useState(null);
   const [index, setIndex] = useState(null);
   const [itemPrice, setItemPrice] = useState(NaN);
+  
+  function decrementAmount(amount, id, index, price) {
+    setId(id);
+    setIndex(index);
+    amount = amount - 1;
+    amount === 0 ? removeItem(index, id, price) : setTotalAmount(amount);
+  }
 
   function incrementAmount(amount, id, index) {
     setId(id);
@@ -60,15 +66,9 @@ export default function Cart(props) {
     setTotalAmount(amount);
   }
 
-  function decrementAmount(amount, id, index, price) {
-    setId(id);
-    setIndex(index);
-    amount = amount - 1;
-    amount === 0 ? removeItem(index, id, price) : setTotalAmount(amount);
-  }
   
   useEffect(() => {
-    if (index !== null) setItemPrice((totalAmount * items[index].base).toFixed(2));
+    if (index !== null) setItemPrice((totalAmount * items[index].initial).toFixed(2));
   }, [totalAmount]);
   
   useEffect(() => {
@@ -97,17 +97,20 @@ export default function Cart(props) {
    {items.map((item, index) => {
       return (
         <div key={item.id}>
-          <div>{item.name}</div>
+          <h3>{item.name}</h3>
+          <br/>
+          <img src={item.image} alt={item.image} height="150px" width="150px"/>
+          <br/>
           <br/>
           <div style={{display: "flex", gap: "5px"}}><DecrementBtn onClick={() => decrementAmount(item.amount, item.id, index, item.price)}/>{item.amount} <IncrementBtn onClick={() => incrementAmount(item.amount, item.id, index)}/></div>
           <br/>
           <div>${item.price}</div>
           <br/>
           <br/>
-          <Link to={`/shop/${item.id}`}>More Info</Link>
+          <button><Link to={`/shop/${item.id}`} style={{textDecoration: "none", color: "black"}}>More Info</Link></button>
           <br/>
           <br/>
-          <button onClick={() => removeItem(index, item.id, item.price)}>Remove</button>
+          <button onClick={() => removeItem(index, item.id, item.price)} style={{cursor: "pointer"}}>Remove Item</button>
           <br/>
           <br/>
         </div>

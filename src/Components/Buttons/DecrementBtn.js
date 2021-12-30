@@ -6,7 +6,7 @@ export default function DecrementBtn(props) {
 
  return (
   <div>
-   <button onClick={onClick}>-</button>
+   <button onClick={onClick} style={{cursor: "pointer"}}>-</button>
   </div>
  );
 }
